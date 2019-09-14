@@ -1,2 +1,2 @@
 # bme280
-Arduino library for Bosch BME280 atmospheric preassure, temperature and humidity sensor 
+Arduino sketch for Bosch BME280 atmospheric preassure, temperature and humidity sensor. No external library is required.
