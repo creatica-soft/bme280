@@ -427,7 +427,7 @@ void printData(struct Data * data) {
   p = data->p / 256.0;
   h = data->h / 1024.0;
 
-  sprintf(s, String(F("T = %.1f%.2sC, H = %.1f%%, P = %.1fmm Hg (%.1fmb(hPa))")).c_str(), t, (char *)(&deg), h, p * 0.0075006157584566, p / 100);
+  sprintf(s, String(F("T = %.1f%.2sC, H = %.1f%%, P = %.1fmb(hPa) (%.1fmm Hg)")).c_str(), t, (char *)(&deg), h, p / 100, p * 0.0075006157584566);
   Serial.println(s);
 }
 
