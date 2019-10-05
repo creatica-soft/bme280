@@ -1,6 +1,7 @@
 //BME280 - 3.3V Barometric pressure, temperature and humidity sensor
 //Has I2C and SPI interfaces (4- or 3-wire SPI intefaces are supported). 3-wire uses SDI for both input and output (must write "1" to spi3w_en register), SDO is not used (not connected)
 //This sketch uses I2C (ports 20 - SDA and 21 - SCL on Arduino Mega via level shifter)
+//gcc bme280.cpp -o bme280 -lwiringPi
 
 #include <stdint.h>
 #include <cstring>
