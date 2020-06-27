@@ -216,7 +216,7 @@ void parseSettings(const uint8_t* regData, struct Settings* sets) {
 
 void softReset(int fd) {
 	uint8_t err;
-	printf("Resetting...\n");
+	//printf("Resetting...\n");
 	if ((err = writeRegister(fd, BME280_RESET_ADDR, 0xB6)) != 0)
 		printf("softReset() writeRegister error %hhd\n", err);
 	struct timespec req;
@@ -420,14 +420,17 @@ void getCalibData(int fd, struct CalibData * calibData) {
 	parseHumidCalibData(cData, calibData);
 }
 
-void printData(struct Data * data) {
+void printData(struct Data * data, bool raw) {
 	double t, p, h;
-	uint8_t deg[2] = { 0xc2, 0xb0 }; //unicode degree symbol
+	uint8_t deg[3] = { 0xc2, 0xb0, 0 }; //unicode degree symbol
 	t = data->t / 100.0;
 	p = data->p / 256.0;
 	h = data->h / 1024.0;
 
-	printf("T = %.1f%.2sC, H = %.1f%%, P = %.1fmb(hPa) (%.1fmm Hg)\n", t, (char *)(&deg), h, p / 100, p * 0.0075006157584566);
+	if (raw)
+		printf("t=%.1f&h=%.1f&p=%.1f\n", t, h, p / 100);
+	else 
+		printf("T = %.1f%sC, H = %.1f%%, P = %.1fmb(hPa) (%.1fmm Hg)\n", t, (char *)(&deg), h, p / 100, p * 0.0075006157584566);
 }
 
 void setup(int fd) {
@@ -464,12 +467,12 @@ void setup(int fd) {
 	setMode(fd, BME280_NORMAL_MODE);
 }
 
-void loop(int fd, int sampling_rate_sec) {
+void loop(int fd, int sampling_rate_sec, bool raw) {
 	sleep(sampling_rate_sec);
 	struct Data data;
 	data.h = 0; data.p = 0; data.t = 0;
 	getData(fd, BME280_ALL, &data);
-	printData(&data);
+	printData(&data, raw);
 }
 
 void i2c_funcs(int fd) {
@@ -519,8 +522,8 @@ void i2c_funcs(int fd) {
 int main(int argc, char ** argv) {
 	int res, counter = 0;
 
-	if (argc > 4 || argc < 2) {
-		printf("Usage: bme280 <i2c-dev> [sampling_rate_sec] [number_of_samples]\n");
+	if (argc > 5 || argc < 2) {
+		printf("Usage: bme280 <i2c-dev> [sampling_rate_sec] [number_of_samples] [--raw]\n");
 		return -1;
 	}
 	char device[16];
@@ -535,12 +538,16 @@ int main(int argc, char ** argv) {
 		sampling_rate_sec = atoi(argv[2]);
 	}
 	int number_of_samples = DEFAULT_NUMBER_OF_SAMPLES;
-	if (argc == 4) {
+	if (argc >= 4) {
 		if (!isdigit(argv[3][0])) {
 			printf("number_of_samples %s is not a number\n", argv[2]);
 			return -1;
 		}
 		number_of_samples = atoi(argv[3]);
+	}
+	bool raw = false;
+	if (argc == 5) {
+		if (strncmp(argv[4], "--raw", 5) == 0) raw = true;
 	}
 	if (len >= 16) {
 		printf("error: i2c-dev string \'%s\' is too long, must be less than 16 chars\n", argv[1]);
@@ -573,6 +580,6 @@ int main(int argc, char ** argv) {
 	//i2c_funcs(fd);
 
 	setup(fd);
-	while (counter++ < number_of_samples)	loop(fd, sampling_rate_sec);
+	while (counter++ < number_of_samples)	loop(fd, sampling_rate_sec, raw);
 	close(fd);
 }
