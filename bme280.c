@@ -7,6 +7,7 @@
 #define I2C_DEV_RETRIES 3
 #define I2C_TIMEOUT 100 //in 10ms intervals
 #define DEFAULT_SAMPLING_RATE_SEC 1
+#define DEFAULT_NUMBER_OF_SAMPLES 1
 
 #include <errno.h>
 #include <ctype.h>
@@ -516,22 +517,30 @@ void i2c_funcs(int fd) {
 }
 
 int main(int argc, char ** argv) {
-	int res;
+	int res, counter = 0;
 
-	if (argc > 3 || argc < 2) {
-		printf("Usage: bme280 <i2c-dev> [sampling_rate_sec]\n");
+	if (argc > 4 || argc < 2) {
+		printf("Usage: bme280 <i2c-dev> [sampling_rate_sec] [number_of_samples]\n");
 		return -1;
 	}
 	char device[16];
 
 	int len = strlen(argv[1]);
 	int sampling_rate_sec = DEFAULT_SAMPLING_RATE_SEC;
-	if (argc == 3) {
+	if (argc >= 3) {
 		if (!isdigit(argv[2][0])) {
 			printf("sampling_rate_sec %s is not a number\n", argv[2]);
 			return -1;
 		}
 		sampling_rate_sec = atoi(argv[2]);
+	}
+	int number_of_samples = DEFAULT_NUMBER_OF_SAMPLES;
+	if (argc == 4) {
+		if (!isdigit(argv[3][0])) {
+			printf("number_of_samples %s is not a number\n", argv[2]);
+			return -1;
+		}
+		number_of_samples = atoi(argv[3]);
 	}
 	if (len >= 16) {
 		printf("error: i2c-dev string \'%s\' is too long, must be less than 16 chars\n", argv[1]);
@@ -564,6 +573,6 @@ int main(int argc, char ** argv) {
 	//i2c_funcs(fd);
 
 	setup(fd);
-	while (true)	loop(fd, sampling_rate_sec);
+	while (counter++ < number_of_samples)	loop(fd, sampling_rate_sec);
 	close(fd);
 }
