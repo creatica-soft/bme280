@@ -62,7 +62,12 @@ if (!rrd_update("/var/env.rrd", $values)) {
 }
 ?>
 
+cat bme280.sh
+#!/bin/bash
 curl "http://example.com/bme280.php?$(./bme280 /dev/i2c-1 1 1 --raw)"
+
+crontab -e
+0 * * * * bme280.sh
 
 ```
 
