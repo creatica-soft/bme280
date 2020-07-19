@@ -76,6 +76,10 @@ Later you may graph the data:
 ```
 cat /opt/nginx/html/env.php
 <?php
+$height = "-h 100";
+$width = "-w 1000";
+$start = "-s end-1w";
+$end = "-e now";
 $file_t = "/opt/nginx/html/images/temperature.png";
 $file_h = "/opt/nginx/html/images/humidity.png";
 $file_p = "/opt/nginx/html/images/pressure.png";
@@ -85,17 +89,20 @@ $def_p = "DEF:h=/var/env.rrd:pressure:LAST";
 $line_t = "LINE1:t#0000FF:'temperature'";
 $line_h = "LINE1:h#0000FF:'humidity'";
 $line_p = "LINE1:h#0000FF:'pressure'";
-$values = [$def_t, $line_t];
+$values = [$end, $start, $height, $width, $def_t, $line_t];
 rrd_graph($file_t, $values);
 print_r(rrd_error());
-$values = [$def_h, $line_h];
+$values = [$end, $start, $height, $width, $def_h, $line_h];
 rrd_graph($file_h, $values);
 print_r(rrd_error());
-$values = [$def_p, $line_p];
+$values = [$end, $start, $height, $width, "-l 990", "-u 1040", "-r", $def_p, $line_p];
 rrd_graph($file_p, $values);
 print_r(rrd_error());
 ?>
 <html>
+<head>
+<meta http-equiv="Cache-control" content="no-store">
+</head>
 <body>
 <img src="images/temperature.png" />
 <br />
