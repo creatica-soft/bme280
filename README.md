@@ -124,3 +124,14 @@ print_r(rrd_error());
 
 http://example.com/env.php
 ```
+Or you may just get the last number of any metric using this PHP
+
+```
+cat env_lastupdate_temperature.php
+<?php
+$last_update = rrd_lastupdate("/var/env.rrd");
+print_r($last_update["data"][0]);
+?>
+```
+
+This can be useful in timer/relay applications that use ESP8266 wifi chip to get simple environmental number over http and act upon it. For example, turn on/off the heater when the temperature drops/exceeds certain limits, or turn on/off the fan when humidity rises/drops certain levels.
