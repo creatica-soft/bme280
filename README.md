@@ -8,7 +8,7 @@ Now in Raspberry Pi, it is easy to collect environmental data in any time series
 
 ```
 rrdtool create /var/env.rrd \
-          --step 1h \
+          --step 1m \
           DS:temperature:GAUGE:1d:-50:50 \
           RRA:AVERAGE:0.5:1h:1d \
           RRA:AVERAGE:0.5:1h:1M \
@@ -67,7 +67,7 @@ cat bme280.sh
 curl "http://example.com/bme280.php?$(./bme280 /dev/i2c-1 1 1 --raw)"
 
 crontab -e
-0 * * * * bme280.sh
+0-59 * * * * bme280.sh
 
 ```
 
