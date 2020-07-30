@@ -11,48 +11,57 @@ rrdtool create /var/env.rrd \
           --step 1m \
           DS:temperature:GAUGE:1d:-50:50 \
           RRA:AVERAGE:0.5:1m:1h \
+          RRA:AVERAGE:0.5:1m:1d \
           RRA:AVERAGE:0.5:1h:1d \
           RRA:AVERAGE:0.5:1h:1M \
           RRA:AVERAGE:0.5:1d:1y \
           RRA:AVERAGE:0.5:1d:10y \
           RRA:MIN:0.5:1m:1h \
+          RRA:MIN:0.5:1m:1d \
           RRA:MIN:0.5:1h:1d \
           RRA:MIN:0.5:1h:1M \
           RRA:MIN:0.5:1d:1y \
           RRA:MIN:0.5:1d:10y \
           RRA:MAX:0.5:1m:1h \
+          RRA:MAX:0.5:1m:1d \
           RRA:MAX:0.5:1h:1d \
           RRA:MAX:0.5:1h:1M \
           RRA:MAX:0.5:1d:1y \
           RRA:MAX:0.5:1d:10y \
           DS:humidity:GAUGE:1d:0:100 \
           RRA:AVERAGE:0.5:1m:1h \
+          RRA:AVERAGE:0.5:1m:1d \
           RRA:AVERAGE:0.5:1h:1d \
           RRA:AVERAGE:0.5:1h:1M \
           RRA:AVERAGE:0.5:1d:1y \
           RRA:AVERAGE:0.5:1d:10y \
           RRA:MIN:0.5:1m:1h \
+          RRA:MIN:0.5:1m:1d \
           RRA:MIN:0.5:1h:1d \
           RRA:MIN:0.5:1h:1M \
           RRA:MIN:0.5:1d:1y \
           RRA:MIN:0.5:1d:10y \
           RRA:MAX:0.5:1m:1h \
+          RRA:MAX:0.5:1m:1d \
           RRA:MAX:0.5:1h:1d \
           RRA:MAX:0.5:1h:1M \
           RRA:MAX:0.5:1d:1y \
           RRA:MAX:0.5:1d:10y \
           DS:pressure:GAUGE:1d:800:1200 \
           RRA:AVERAGE:0.5:1m:1h \
+          RRA:AVERAGE:0.5:1m:1d \
           RRA:AVERAGE:0.5:1h:1d \
           RRA:AVERAGE:0.5:1h:1M \
           RRA:AVERAGE:0.5:1d:1y \
           RRA:AVERAGE:0.5:1d:10y \
           RRA:MIN:0.5:1m:1h \
+          RRA:MIN:0.5:1m:1d \
           RRA:MIN:0.5:1h:1d \
           RRA:MIN:0.5:1h:1M \
           RRA:MIN:0.5:1d:1y \
           RRA:MIN:0.5:1d:10y \
           RRA:MAX:0.5:1m:1h \
+          RRA:MAX:0.5:1m:1d \
           RRA:MAX:0.5:1h:1d \
           RRA:MAX:0.5:1h:1M \
           RRA:MAX:0.5:1d:1y \
